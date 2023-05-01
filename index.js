@@ -27,17 +27,7 @@ mainBlock.appendChild(inputField)
 const keyboard = document.createElement('div');
 keyboard.setAttribute('class', 'keyboard');
 mainBlock.appendChild(keyboard);
-// function toggleKeyboardLayout() {
-//   var input = document.getElementById("myInput");
-//   if (input.lang === "en") {
-//     input.lang = "ru";
-//   } else {
-//     input.lang = "en";
-//   }
-// }
 
-
-//const thirdRowKeys=[67,97,115,100,102,103,104,106,107,108,59,39,6]
 const firstRowKeys=['`','1','2','3','4','5','6','7','8','9','0','-','=','Backspace']
 const firstRowChange=['~','!','@','#','$','%','^','&','*','(',')','_','+','Backspace']
 const secondRowKeys=['Tab','q','w','e','r','t','y','u','i','o','p','[',']','\\','Del']
@@ -64,32 +54,56 @@ const fiveRowBlock = document.createElement('div');
 fiveRowBlock.setAttribute('class', 'five-row row-block');
 keyboard.appendChild(fiveRowBlock); 
 
-// -------------------------------------------------------------------------------------------------------
-function createElements(array,num) {
-  let out=''
-  for (let i = 0; i <array.length; i++) {
-out+=`<button class="main-btn" data="`+array[i].charCodeAt(0)+`">`+array[i]+`</button>`
-document.querySelector(num).innerHTML=out
+//createElements -------------------------------------------------------------------------------------------------------
+function createElements(array, num) {
+  let out = "";
+  for (let i = 0; i < array.length; i++) {
+    let temp = array[i];
+    if (array[i] === "") temp = "space";
+    if (array[i] === "\\") temp = "backslash";
+    if (array[i] === "Del") temp = "Delete";
+    if (array[i] === "Win") temp = "Meta";
+    if (array[i] === "Shift" && i === 0) temp = "Shift-left";
+    if (array[i] === "Ctrl" && i === 0) temp = "Control-left";
+    if (array[i] === "Ctrl" && i !== 0) temp = "Control";
+    if (array[i] === "Alt" && i === 2) temp = "Alt-left";
+    if (array[i] === String.fromCharCode(0x2191)) temp = "ArrowUp";
+    if (array[i] === String.fromCharCode(0x2192)) temp = "ArrowRight";
+    if (array[i] === String.fromCharCode(0x2193)) temp = "ArrowDown";
+    if (array[i] === String.fromCharCode(0x2190)) temp = "ArrowLeft";
+    out +=
+      `<button class="main-btn" data="` + temp + `">` + array[i] + `</button>`;
+    document.querySelector(num).innerHTML = out;
   }
-  document.querySelectorAll('.main-btn').forEach((array,i)=>{
-    if (array.textContent.length>4) array.classList.add('big-btn')
-    if (array.textContent==='') array.classList.add('space-btn')
-    if(array.textContent==='CapsLock') array.classList.add('caps-lock')
-    if(array.textContent==='Shift') array.classList.add('shift')
-  })
-}
-function createAllElements() {
-createElements(firstRowKeys,'.first-row') 
-createElements(secondRowKeys,'.second-row') 
-createElements(thirdRowKeys,'.third-row') 
-createElements(fourRowKeys,'.four-row') 
-createElements(fiveRowKeys,'.five-row') 
+
+  document.querySelectorAll(".main-btn").forEach((array, i) => {
+    if (array.textContent.length > 4) array.classList.add("big-btn");
+    if (array.textContent === "") array.classList.add("space-btn");
+    if (array.textContent === "CapsLock") array.classList.add("caps-lock");
+    if (array.textContent === "Shift") array.classList.add("shift");
+    if (array.textContent === "Del") array.classList.add("del");
+    if (array.textContent === "Backspace") array.classList.add("backspace");
+  });
 }
 
-createAllElements()
+function createAllElements() {
+  createElements(firstRowKeys, ".first-row");
+  createElements(secondRowKeys, ".second-row");
+  createElements(thirdRowKeys, ".third-row");
+  createElements(fourRowKeys, ".four-row");
+  createElements(fiveRowKeys, ".five-row");
+}
+
+createAllElements();
+
+
+// document.querySelector('.del').addEventListener ('click', () => {
+//   out = out.substring(0, out.length - 1);
+//   document.querySelector(num).innerHTML = out;
+// });
 
 function getUpperCase(array) {
-  return  array.map(key => {
+  return array.map((key) => {
     if (key.length === 1) {
       return key.toUpperCase();
     } else {
@@ -99,10 +113,10 @@ function getUpperCase(array) {
 }
 
 function getAllUpperCase() {
-  createElements(getUpperCase(secondRowChange),'.second-row')
-  createElements(getUpperCase(thirdRowKeys),'.third-row')
-  createElements(getUpperCase(fourRowKeys),'.four-row')
-  clickButtons()
+  createElements(getUpperCase(secondRowChange), ".second-row");
+  createElements(getUpperCase(thirdRowKeys), ".third-row");
+  createElements(getUpperCase(fourRowKeys), ".four-row");
+  clickButtons();
 }
 
 function clickShift() {
@@ -110,86 +124,85 @@ function clickShift() {
   createElements(getUpperCase(secondRowChange), ".second-row");
   createElements(getUpperCase(thirdRowChange), ".third-row");
   createElements(getUpperCase(fourRowChange), ".four-row");
-  clickButtons()
+  clickButtons();
 }
 
 function addFocusClass(element) {
-  if(element.textContent!=='CapsLock'){
-  element.classList.add('focused');
-  setTimeout(function() {
-    element.classList.remove('focused');
-  }, 300); }
+  if (element.textContent === "CapsLock") {
+    element.classList.toggle("focused");
+  } else {
+    element.classList.add("focused");
+    setTimeout(function () {
+      element.classList.remove("focused");
+    }, 300);
+  }
 }
+
 function clickButtons() {
-document.querySelectorAll('.main-btn').forEach((array)=>{
-  array.addEventListener('click',function() {addFocusClass(this)});
-  array.addEventListener('click', function() {
-    if(array.textContent.length===1)inputField.value += this.innerHTML;
-  })
-})
+  document.querySelectorAll(".main-btn").forEach((array) => {
+    array.addEventListener("click", function () {
+      addFocusClass(this);
+    });
+    array.addEventListener("click", function () {
+      if (array.textContent.length === 1) inputField.value += this.innerHTML;
+    });
+  });
 }
 
-clickButtons()
-
-// function clickCapsLock() {
-//   let capsLockOn = false;
-//   const capsLock = document.querySelector('.caps-lock');
-//   capsLock.addEventListener('click', () => {
-//     if (capsLockOn) {
-//       capsLockOn = false;
-//       capsLock.classList.remove('focused');
-//     } else {
-//       capsLockOn = true;
-//       capsLock.classList.add('focused');
-//     }
-//     if (capsLockOn) {
-//       getAllUpperCase();
-//     } else {
-//       createAllElements()
-//     }
-//   });
-// }
+clickButtons();
 
 function clickCapsLock() {
-  const capsLock = document.querySelector('.caps-lock');
-  capsLock.addEventListener('click', () => {
-    if (capsLock.classList.contains('focused')) {
-      capsLock.classList.remove('focused');
-     // getAllUpperCase();
-    } else {
-      capsLock.classList.add('focused');
-      // Викликати функцію
+  const capsLock = document.querySelector(".caps-lock");
+  capsLock.addEventListener("click", () => {
+    if (capsLock.classList.contains("focused")) {
+     getAllUpperCase();
+    } else  {
+      createAllElements();
     }
   });
 }
 
-clickCapsLock() 
+clickCapsLock();
 
-document.querySelector('.shift').addEventListener('click',()=>{clickShift()})
-document.onkeyup=function(event) {
-  console.log(event.key.charCodeAt(0))
-  document.querySelectorAll('.main-btn').forEach(el=>{el.classList.remove('focused');
-  })
-  addFocusClass(document.querySelector(`.main-btn[data="`+event.key.charCodeAt(0)+`"]`))
-}
+document.querySelector(".shift").addEventListener("click", () => {
+  clickShift();
+});
 
+//onkeyup---------------------------------------------------------------------------------------------------------------------------------------------
+document.onkeyup = function (event) {
+  let temp = event.key;
+  if (event.key === " ") temp = "space";
+  if (event.key === "\\") temp = "backslash";
+  if (event.code === "ShiftLeft") temp = "Shift-left";
+  if (event.code === "ControlLeft") temp = "Control-left";
+  if (event.code === "AltLeft") temp = "Alt-left";
+  document.querySelectorAll(".main-btn").forEach((el) => {
+    el.classList.remove("focused");
+  });
+  if (event.key === "CapsLock") getAllUpperCase();
+  addFocusClass(document.querySelector(`.main-btn[data="` + temp + `"]`));
+  if (event.code === "ControlLeft"|| event.code === "AltLeft") toggleKeyboardLayout()
+};
 
 //create instruction-----------------------------------------------------------------------------------------------------------------------------------------------------
-const instructionBlock = document.createElement('footer');
-instructionBlock.setAttribute('class', 'instruction-block');
+const instructionBlock = document.createElement("footer");
+instructionBlock.setAttribute("class", "instruction-block");
 
-const instructionOne = document.createElement('h3');
-instructionOne.setAttribute('class', 'instruction');
-instructionOne.textContent = "The keyboard is created in the Windows operating system";
+const instructionOne = document.createElement("h3");
+instructionOne.setAttribute("class", "instruction");
+instructionOne.textContent =
+  "The keyboard is created in the Windows operating system";
 
-const instructionTwo = document.createElement('h3');
-instructionTwo.setAttribute('class', 'instruction');
-instructionTwo.textContent = "To switch the language combination: left ctrl + alt";
+const instructionTwo = document.createElement("h3");
+instructionTwo.setAttribute("class", "instruction");
+instructionTwo.textContent =
+  "To switch the language combination: left ctrl + alt";
 
-instructionBlock.appendChild(instructionOne); 
-instructionBlock.appendChild(instructionTwo); 
+instructionBlock.appendChild(instructionOne);
+instructionBlock.appendChild(instructionTwo);
 
-wrapperBlock.appendChild(instructionBlock); 
+wrapperBlock.appendChild(instructionBlock);
 
 const scriptTag = document.querySelector('script[src="./index.js"]');
 document.body.appendChild(scriptTag);
+
