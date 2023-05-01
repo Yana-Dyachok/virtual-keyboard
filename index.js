@@ -1,33 +1,50 @@
 // create header-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-const wrapperBlock = document.createElement('div');
-wrapperBlock.setAttribute('class', 'wrapper');
-document.body.appendChild(wrapperBlock); 
-const titleBlock = document.createElement('header');
-titleBlock.setAttribute('class', 'title-block');
+const wrapperBlock = document.createElement("div");
+wrapperBlock.setAttribute("class", "wrapper");
+document.body.appendChild(wrapperBlock);
+const titleBlock = document.createElement("header");
+titleBlock.setAttribute("class", "title-block");
 
-const title = document.createElement('h1');
-title.setAttribute('class', 'title');
+const title = document.createElement("h1");
+title.setAttribute("class", "title");
 title.textContent = "RSS Virtual Keyboard";
 
-titleBlock.appendChild(title); 
+titleBlock.appendChild(title);
 
-wrapperBlock.appendChild(titleBlock); 
+wrapperBlock.appendChild(titleBlock);
 
-const mainBlock = document.createElement('main');
-mainBlock.setAttribute('class', 'main-block');
+const mainBlock = document.createElement("main");
+mainBlock.setAttribute("class", "main-block");
 wrapperBlock.appendChild(mainBlock);
-  
+
 // create textarea-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-const inputField = document.createElement('textarea');
-inputField.setAttribute('type', 'text');
-inputField.setAttribute('class', 'input-keyboard');
-mainBlock.appendChild(inputField)
+const inputField = document.createElement("textarea");
+inputField.setAttribute("type", "text");
+inputField.setAttribute("class", "input-keyboard");
+mainBlock.appendChild(inputField);
 
 // create keyboard-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-const keyboard = document.createElement('div');
-keyboard.setAttribute('class', 'keyboard');
+const keyboard = document.createElement("div");
+keyboard.setAttribute("class", "keyboard");
 mainBlock.appendChild(keyboard);
 
+let currentLanguage = "en";
+
+function toggleKeyboardLayout() {
+  if (currentLanguage === "en") {
+    currentLanguage = "ru";
+  } else {
+    currentLanguage = "en";
+  }
+  inputField.lang = currentLanguage; 
+}
+
+
+//const firstRowKeys=[96,49,50,51,52,53,54,55,56,57,48,45,61,66]
+//const secondRowKeys=[84,113,119,101,114,116,121,117,105,111,112,91,93,92]
+//const thirdRowKeys=[67,97,115,100,102,103,104,106,107,108,59,39,69]
+//const fourRowKeys=[83,122,120,99,118,98,110,109,44,46,47,65,83]
+//const fiveRowKeys=[67,77,65,32,65,String.fromCharCode(0x2190),String.fromCharCode(0x2193),String.fromCharCode(0x2192),67]
 const firstRowKeys=['`','1','2','3','4','5','6','7','8','9','0','-','=','Backspace']
 const firstRowChange=['~','!','@','#','$','%','^','&','*','(',')','_','+','Backspace']
 const secondRowKeys=['Tab','q','w','e','r','t','y','u','i','o','p','[',']','\\','Del']
@@ -38,21 +55,28 @@ const fourRowKeys=['Shift','z','x','c','v','b','n','m',',','.','/',String.fromCh
 const fourRowChange=['Shift','z','x','c','v','b','n','m','<','>','?',String.fromCharCode(0x2191),'Shift']
 const fiveRowKeys=['Ctrl','Win','Alt','','Alt',String.fromCharCode(0x2190),String.fromCharCode(0x2193),String.fromCharCode(0x2192),'Ctrl']
 
-const firstRowBlock = document.createElement('div');
-firstRowBlock.setAttribute('class', 'first-row row-block');
+const secondRowKeysUa=['Tab','й','ц','у','к','е','н','г','ш','щ','з','х',']','\\','Del']
+const secondRowChangeUa=['Tab','й','ц','у','к','е','н','г','ш','щ','з','х','}','|','Del']
+const thirdRowKeysUa=['CapsLock','ф','і','в','а','п','р','о','л','д','ж','є','Enter']
+const thirdRowChangeUa=['CapsLock','ф','і','в','а','п','р','о','л','д','ж','є','Enter']
+const fourRowKeysUa=['Shift','я','ч','с','м','и','т','ь','б','ю','/',String.fromCharCode(0x2191),'Shift']
+const fourRowChangeUa=['Shift','я','ч','с','м','и','т','ь','б','ю','?',String.fromCharCode(0x2191),'Shift']
+
+const firstRowBlock = document.createElement("div");
+firstRowBlock.setAttribute("class", "first-row row-block");
 keyboard.appendChild(firstRowBlock);
-const secondRowBlock = document.createElement('div');
-secondRowBlock.setAttribute('class', 'second-row row-block');
+const secondRowBlock = document.createElement("div");
+secondRowBlock.setAttribute("class", "second-row row-block");
 keyboard.appendChild(secondRowBlock);
-const thirdRowBlock = document.createElement('div');
-thirdRowBlock.setAttribute('class', 'third-row row-block');
+const thirdRowBlock = document.createElement("div");
+thirdRowBlock.setAttribute("class", "third-row row-block");
 keyboard.appendChild(thirdRowBlock);
-const fourRowBlock = document.createElement('div');
-fourRowBlock.setAttribute('class', 'four-row row-block');
+const fourRowBlock = document.createElement("div");
+fourRowBlock.setAttribute("class", "four-row row-block");
 keyboard.appendChild(fourRowBlock);
-const fiveRowBlock = document.createElement('div');
-fiveRowBlock.setAttribute('class', 'five-row row-block');
-keyboard.appendChild(fiveRowBlock); 
+const fiveRowBlock = document.createElement("div");
+fiveRowBlock.setAttribute("class", "five-row row-block");
+keyboard.appendChild(fiveRowBlock);
 
 //createElements -------------------------------------------------------------------------------------------------------
 function createElements(array, num) {
@@ -96,6 +120,23 @@ function createAllElements() {
 
 createAllElements();
 
+let lastKeyPressed = null;
+let keyboardLayout = "default";
+
+function toggleKeyboardLayout() {
+ // if (keyboardLayout === "default") {
+  //  keyboardLayout = "alternative";
+    createElements(secondRowKeysUa, ".second-row");
+    createElements(thirdRowKeysUa, ".third-row");
+    createElements(fourRowKeysUa, ".four-row");
+    clickButtons();
+  // } else {
+  //   keyboardLayout = "default";
+  //   createAllElements()
+  //   clickButtons();
+  // }
+  
+}
 
 // document.querySelector('.del').addEventListener ('click', () => {
 //   out = out.substring(0, out.length - 1);
@@ -119,12 +160,18 @@ function getAllUpperCase() {
   clickButtons();
 }
 
+let shiftKeyPressed = false;
 function clickShift() {
+  if (shiftKeyPressed) {
   createElements(getUpperCase(firstRowChange), ".first-row");
   createElements(getUpperCase(secondRowChange), ".second-row");
   createElements(getUpperCase(thirdRowChange), ".third-row");
   createElements(getUpperCase(fourRowChange), ".four-row");
   clickButtons();
+}
+if(!shiftKeyPressed) {
+  createAllElements();
+}
 }
 
 function addFocusClass(element) {
@@ -151,22 +198,22 @@ function clickButtons() {
 
 clickButtons();
 
+document.querySelectorAll(".shift").forEach((array) => {
+  array.addEventListener("click", clickShift())
+});
+
 function clickCapsLock() {
   const capsLock = document.querySelector(".caps-lock");
   capsLock.addEventListener("click", () => {
-    if (capsLock.classList.contains("focused")) {
+    //if (this.classList.contains("focused")) {
      getAllUpperCase();
-    } else  {
-      createAllElements();
-    }
+   // } else  {
+     // createAllElements();
+   // }
   });
 }
 
 clickCapsLock();
-
-document.querySelector(".shift").addEventListener("click", () => {
-  clickShift();
-});
 
 //onkeyup---------------------------------------------------------------------------------------------------------------------------------------------
 document.onkeyup = function (event) {
@@ -180,8 +227,33 @@ document.onkeyup = function (event) {
     el.classList.remove("focused");
   });
   if (event.key === "CapsLock") getAllUpperCase();
+document.addEventListener("keydown", function(event) {
+  if (event.key === "Shift") {
+    shiftKeyPressed = true;
+    clickShift();
+    document.querySelectorAll(".shift").classList.add('.focused')
+  }
+});
+
+document.addEventListener("keyup", function(event) {
+  if (event.key === "Shift") {
+    shiftKeyPressed = false;
+    createAllElements();
+    document.querySelectorAll(".shift").classList.remove('.focused')
+  }
+});
   addFocusClass(document.querySelector(`.main-btn[data="` + temp + `"]`));
-  if (event.code === "ControlLeft"|| event.code === "AltLeft") toggleKeyboardLayout()
+ if (event.code === "ControlLeft"|| event.code === "AltLeft") toggleKeyboardLayout()
+// document.addEventListener("keydown", function(event) {
+//   if (event.code === "ControlLeft" || event.code === "AltLeft") {
+//     if (event.code === lastKeyPressed) {
+//       toggleKeyboardLayout();
+//       lastKeyPressed = null;
+//     } else {
+//       lastKeyPressed = event.code;
+//     }
+//   }
+// });
 };
 
 //create instruction-----------------------------------------------------------------------------------------------------------------------------------------------------
