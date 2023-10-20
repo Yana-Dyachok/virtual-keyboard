@@ -8,6 +8,7 @@ import {
   changeShiftAndCapps,
   flags
 } from "./utils/create.js";
+import './css/style.css';
 
 const shiftBtn = document.querySelectorAll(".shift");
 const [shiftLeft, shiftRight] = Array.from(shiftBtn);
