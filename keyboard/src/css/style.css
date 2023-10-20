@@ -1,10 +1,10 @@
 @font-face {
   font-family: "Georgia";
-  src: url("./assets/fonts/georgia.ttf");
+  src: url("../assets/fonts/georgia.ttf");
 }
 @font-face {
   font-family: "Arial";
-  src: url("./assets/fonts/ARIAL.TTF");
+  src: url("../assets/fonts/ARIAL.TTF");
 }
 /*Normalize*/
 * {
