@@ -1,0 +1,245 @@
+@font-face {
+    font-family: "Georgia";
+    src: url("../assets/fonts/georgia.ttf");
+  }
+  
+  @font-face {
+    font-family: "Arial";
+    src: url("../assets/fonts/ARIAL.TTF");
+  }
+  
+  /*Normalize*/
+  
+  * {
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+  
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+  
+  :focus,
+  :active {
+    outline: none;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  a:focus,
+  a:active {
+    outline: none;
+  }
+
+  $black: black;
+  $textColor: #f7f2f2;
+  $titleTextColor: #00ffff;
+  $btnColor: #545050;
+  $btnHover: #3fbbf5e6;
+  $btnFocused: #2323e9e6;
+
+  %titleInstruction {
+    text-align: center;
+    font-family: "Georgia";
+    font-size: 1.7rem;
+    color: $titleTextColor;
+    text-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.5);
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    height: 100hv;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    background: url(../../public/polnaya-luna.jpg) center/cover no-repeat;
+    background-attachment: fixed;
+  }
+  
+  header {
+    padding-top: 4rem;
+  }
+  
+  .main-block {
+    position: sticky;
+    max-width: 80rem;
+    margin: 1rem;
+    background-color: $black;
+    border: 0.1rem solid rgba(255, 252, 252, 0.873);
+    border-radius: 1.5625rem;
+  }
+  
+  .instruction {
+    @extend %titleInstruction;
+  }
+  
+  .title {
+    @extend %titleInstruction;
+    font-size: 2.6rem;
+  }
+  
+  .input-keyboard {
+    width: 90%;
+    max-width: 72rem;
+    height: 8rem;
+    max-height: 20rem;
+    margin: 1rem 1rem 0rem 2rem;
+    padding: 1rem 2rem;
+    font-size: 1.7rem;
+    white-space: normal;
+    word-wrap: break-word;
+    color: $textColor;
+    background-color: $btnColor;
+    border-radius: 1.5625rem;
+    overflow-y: auto;
+  }
+  
+  .keyboard {
+    padding: 1rem 0.8rem;
+    margin: 2rem 4.5rem;
+    background-color: $btnColor;
+    border: 0.1rem solid rgba(249, 245, 245, 0.873);
+    border-radius: 1.5625rem;
+    transition: all 0.5s ease 0s;
+  }
+  
+  .row-block {
+    display: flex;
+    width: 100%;
+  }
+  
+  .main-btn {
+    position: static;
+    min-width: 4rem;
+    height: 4rem;
+    margin: 0.3rem;
+    font-family: "Arial";
+    font-size: 1.5rem;
+    color: $textColor;
+    background-color: $btnColor;
+    border: 0.2rem solid rgba(5, 5, 5, 0.9);
+    border-radius: 7%;
+    cursor: pointer;
+    box-shadow: inset 0 0.5rem 8rem rgba(2, 2, 2, 0.7),
+      inset 0 0.5rem 1rem rgba(7, 6, 6, 0.9),
+      inset 0 -0.5rem 1rem rgb(0, 0, 0, 0.8);
+
+    &.focused {
+      background-color: $btnFocused;
+      border: none;
+      border-radius: 50%;
+      box-shadow: inset 0 0.5rem 8rem rgba(24, 26, 184, 0.7),
+        inset 0 0.5rem 1rem rgba(7, 6, 6, 0.9),
+        inset 0 -0.5rem 1rem rgb(0, 0, 0, 0.8);
+    }
+
+    &:hover {
+      background-color: $btnHover;
+      border: 0.1rem solid rgba(249, 245, 245, 0.906);
+    }
+
+  }
+  
+  .big-btn {
+    position: static;
+    width: 16rem;
+
+    &.focused,
+    .space-btn.focused {
+      border-radius: 2.1875rem;
+    }
+
+  }
+  
+  .space-btn {
+    position: static;
+    width: 34rem;
+    border-radius: 0.3125rem;
+
+    &.focused {
+      border-radius: 2.1875rem;
+    }
+
+  }
+  
+  @media screen and (max-width: 1260px) {
+    .main-block {
+      max-width: 55rem;
+    }
+  
+    .input-keyboard {
+      width: 100%;
+      max-width: 51rem;
+      height: 6rem;
+      margin: 1rem 0.5rem 0rem 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1.3rem;
+    }
+  
+    .keyboard {
+      padding: 1rem 0.8rem;
+      margin: 1rem 2rem;
+    }
+  
+    .main-btn {
+      min-width: 3rem;
+      height: 3rem;
+      margin: 0.15rem;
+      font-size: 1rem;
+    }
+  
+    .big-btn {
+      width: 12rem;
+    }
+  
+    .space-btn {
+      width: 28rem;
+    }
+  }
+  
+  @media screen and (max-width: 880px) {
+  
+    .instruction {
+      font-size: 1.4rem;
+    }
+  
+    .main-block {
+      max-width: 40rem;
+    }
+  
+    .input-keyboard {
+      max-width: 36rem;
+      margin: 1rem;
+    }
+  
+    .keyboard {
+      padding: 1rem 0.5rem;
+      margin: 0.5rem;
+    }
+  
+    .main-btn {
+      min-width: 2.32rem;
+      height: 2.32rem;
+      margin: 0.1rem;
+      font-size: 0.95rem;
+    }
+  
+    .big-btn {
+      width: 8rem;
+    }
+  
+    .space-btn {
+      width: 18rem;
+    }
+  }  
